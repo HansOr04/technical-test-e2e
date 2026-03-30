@@ -29,8 +29,8 @@ public class AddProductToCart implements Task {
     public <T extends Actor> void performAs(T actor) {
         productPage.addToCart(quantity);
         
-        // Pequeña espera física para que OpenCart procese el click
-        try { Thread.sleep(1500); } catch (InterruptedException e) {}
+        // ESPERA DE ESTABILIDAD (Crucial para OpenCart)
+        try { Thread.sleep(2000); } catch (InterruptedException e) {}
         
         // Cambia la lógica para verificar si ESTÁ PRESENTE (aunque no sea visible al 100% todavía)
         if (!productPage.isSuccessAlertPresent()) {

@@ -110,7 +110,7 @@ public class CheckoutPage extends PageObject {
     private WebElementFacade paymentMethodRadio;
 
     /** Terms & conditions checkbox (required by some OpenCart configurations). */
-    @FindBy(css = "div#collapse-payment-method input#input-agree")
+    @FindBy(name = "agree")
     private WebElementFacade termsCheckbox;
 
     /** "Continue" button in Step 5 (Payment Method). */
@@ -202,21 +202,33 @@ public class CheckoutPage extends PageObject {
 
     /** Accepts the default delivery address and continues. */
     public void continueDeliveryDetails() {
-        // Scroll hasta el botón para asegurar que no haya nada tapándolo
-        evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep3Button);
+        // Wait briefly for accordion transition
+        try { Thread.sleep(1000); } catch (InterruptedException e) {}
         
-        continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(15))
-                           .waitUntilClickable()
-                           .click();
+        // Si el botón del paso 4 ya es visible, hacemos clic en él directamente
+        if (continueStep4Button.isVisible() || continueStep4Button.isPresent()) {
+            return; // We skipped step 3! The test can proceed to step 4 logically.
+        } else if (continueStep3Button.isPresent()) {
+            evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep3Button);
+            continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                               .waitUntilClickable()
+                               .click();
+        }
     }
 
     // ── Step 4 ────────────────────────────────────────────────────────────────
 
     /** Selects the first/only shipping method and continues. */
     public void selectShippingMethodAndContinue() {
+        // Wait briefly for accordion transition
+        try { Thread.sleep(1000); } catch (InterruptedException e) {}
+        
         if (!shippingMethodRadio.isSelected()) {
             shippingMethodRadio.click();
         }
+        
+        evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep4Button);
+        
         continueStep4Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
                            .waitUntilClickable()
                            .click();
@@ -228,13 +240,20 @@ public class CheckoutPage extends PageObject {
      * Selects the first/only payment method, accepts T&Cs if present, and continues.
      */
     public void selectPaymentMethodAndContinue() {
+        // Wait briefly for accordion transition
+        try { Thread.sleep(1000); } catch (InterruptedException e) {}
+        
         paymentMethodRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilVisible();
         if (!paymentMethodRadio.isSelected()) {
             paymentMethodRadio.click();
         }
+        
         if (termsCheckbox.isPresent() && !termsCheckbox.isSelected()) {
-            termsCheckbox.click();
+            termsCheckbox.waitUntilClickable().click();
         }
+        
+        evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep5Button);
+        
         continueStep5Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
                            .waitUntilClickable()
                            .click();

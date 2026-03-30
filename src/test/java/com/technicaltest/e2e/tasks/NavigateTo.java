@@ -30,13 +30,11 @@ public class NavigateTo implements Task {
     }
 
     /**
-     * Navigates the actor to the application home page (reads baseUrl from serenity.conf).
+     * Navigates the actor to the application home page via the OpenCart HomePage class.
+     * The baseUrl is automatically read by Serenity from serenity.conf.
      */
-    public static NavigateTo theHomePage() {
-        return instrumented(NavigateTo.class, net.serenitybdd.core.environment.EnvironmentSpecificConfiguration
-                .from(net.thucydides.core.util.EnvironmentVariables.class.cast(
-                        net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getEnvironmentVariables()))
-                .getProperty("environments.default.baseUrl", "https://example.com"));
+    public static net.serenitybdd.screenplay.Performable theHomePage() {
+        return Open.browserOn().the(com.technicaltest.e2e.pages.HomePage.class);
     }
 
     /**

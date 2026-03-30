@@ -29,6 +29,8 @@ public class AddProductToCart implements Task {
     public <T extends Actor> void performAs(T actor) {
         productPage.addToCart(quantity);
         
+        try { Thread.sleep(1500); } catch (InterruptedException e) {}
+        
         // Wait for OpenCart's AJAX success alert to confirm it was added
         // Alternatively, this assertion could be done in Step Definitions
         if (!productPage.isSuccessAlertVisible()) {

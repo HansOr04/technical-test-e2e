@@ -26,7 +26,7 @@ public class CheckoutPage extends PageObject {
     // ─────────────────────────────────────────────────────────────────────────
 
     /** "Guest Checkout" radio button. */
-    @FindBy(css = "input#input-account-guest[type='radio']")
+    @FindBy(xpath = "//input[@value='guest']")
     private WebElementFacade guestCheckoutRadio;
 
     /** "Continue" button in Step 1 (Checkout Options accordion panel). */
@@ -78,7 +78,7 @@ public class CheckoutPage extends PageObject {
     private WebElementFacade regionSelect;
 
     /** "Continue" button in Step 2 (Billing Details). */
-    @FindBy(css = "div#collapse-payment-address input#button-payment-address")
+    @FindBy(id = "button-guest")
     private WebElementFacade continueStep2Button;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -86,7 +86,7 @@ public class CheckoutPage extends PageObject {
     // ─────────────────────────────────────────────────────────────────────────
 
     /** "Continue" button in Step 3 (Delivery Details – same address by default). */
-    @FindBy(css = "div#collapse-shipping-address input#button-shipping-address")
+    @FindBy(id = "button-shipping-address")
     private WebElementFacade continueStep3Button;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -98,7 +98,7 @@ public class CheckoutPage extends PageObject {
     private WebElementFacade shippingMethodRadio;
 
     /** "Continue" button in Step 4 (Delivery Method). */
-    @FindBy(css = "div#collapse-shipping-method input#button-shipping-method")
+    @FindBy(id = "button-shipping-method")
     private WebElementFacade continueStep4Button;
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -185,7 +185,9 @@ public class CheckoutPage extends PageObject {
 
     /** Clicks the "Continue" button on the billing details step. */
     public void continueToBillingStep() {
-        continueStep2Button.click();
+        continueStep2Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                           .waitUntilClickable()
+                           .click();
     }
 
     // ── Step 3 ────────────────────────────────────────────────────────────────

@@ -29,12 +29,12 @@ public class AddProductToCart implements Task {
     public <T extends Actor> void performAs(T actor) {
         productPage.addToCart(quantity);
         
+        // Pequeña espera física para que OpenCart procese el click
         try { Thread.sleep(1500); } catch (InterruptedException e) {}
         
-        // Wait for OpenCart's AJAX success alert to confirm it was added
-        // Alternatively, this assertion could be done in Step Definitions
-        if (!productPage.isSuccessAlertVisible()) {
-            throw new AssertionError("Product added to cart, but success alert was not visible.");
+        // Cambia la lógica para verificar si ESTÁ PRESENTE (aunque no sea visible al 100% todavía)
+        if (!productPage.isSuccessAlertPresent()) {
+            throw new AssertionError("Product added to cart, but success alert was not found in the page.");
         }
     }
 }

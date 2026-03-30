@@ -88,13 +88,13 @@ public class ProductPage extends PageObject {
     }
 
     /**
-     * Returns {@code true} when the success alert is displayed after adding to cart.
+     * Returns {@code true} when the success alert is present in the DOM after adding to cart.
      */
-    public boolean isSuccessAlertVisible() {
+    public boolean isSuccessAlertPresent() {
         try {
             evaluateJavascript("window.scrollTo(0,0)");
             return cartAlert.withTimeoutOf(java.time.Duration.ofSeconds(5)).isPresent();
-        } catch (org.openqa.selenium.TimeoutException | net.thucydides.core.webdriver.exceptions.ElementShouldBeVisibleException e) {
+        } catch (Exception e) {
             return false;
         }
     }

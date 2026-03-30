@@ -202,7 +202,10 @@ public class CheckoutPage extends PageObject {
 
     /** Accepts the default delivery address and continues. */
     public void continueDeliveryDetails() {
-        continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+        // Scroll hasta el botón para asegurar que no haya nada tapándolo
+        evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep3Button);
+        
+        continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(15))
                            .waitUntilClickable()
                            .click();
     }

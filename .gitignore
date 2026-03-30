@@ -1,0 +1,86 @@
+# ─── Compiled class files ─────────────────────────────────────────────────────
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ─── Gradle ───────────────────────────────────────────────────────────────────
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ─── Maven (if ever migrated) ─────────────────────────────────────────────────
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ─── IntelliJ IDEA ────────────────────────────────────────────────────────────
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# ─── Eclipse ──────────────────────────────────────────────────────────────────
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# ─── VS Code ──────────────────────────────────────────────────────────────────
+.vscode/
+
+# ─── NetBeans ─────────────────────────────────────────────────────────────────
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ─── Serenity / Cucumber reports ──────────────────────────────────────────────
+target/site/
+target/cucumber-reports/
+serenity-summary.txt
+
+# ─── WebDriverManager cache ───────────────────────────────────────────────────
+.wdm/
+drivers/
+
+# ─── OS files ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Environment / secrets ────────────────────────────────────────────────────
+.env
+.env.local
+*.properties.local
+
+# ─── Node (if any tooling is added later) ─────────────────────────────────────
+node_modules/
+npm-debug.log*

@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '4.1.6'
+}
+
+group = 'com.technicaltest'
+version = '1.0.0'
+description = 'technical-test-e2e'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    serenityCoreVersion       = '4.1.6'
+    serenityScreenplayVersion = '4.1.6'
+    cucumberVersion           = '7.15.0'
+    webdriverManagerVersion   = '5.6.3'
+    assertjVersion            = '3.25.1'
+    slf4jVersion              = '2.0.11'
+}
+
+dependencies {
+    // Serenity core + Cucumber integration
+    testImplementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}"
+    testImplementation "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}"
+    testImplementation "net.serenity-bdd:serenity-screenplay:${serenityScreenplayVersion}"
+    testImplementation "net.serenity-bdd:serenity-screenplay-webdriver:${serenityScreenplayVersion}"
+    testImplementation "net.serenity-bdd:serenity-ensure:${serenityScreenplayVersion}"
+
+    // Cucumber
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+
+    // JUnit 4 (Serenity still relies on JUnit 4 runner)
+    testImplementation 'junit:junit:4.13.2'
+
+    // WebDriver Manager (handles ChromeDriver download automatically)
+    testImplementation "io.github.bonigarcia:webdrivermanager:${webdriverManagerVersion}"
+
+    // AssertJ
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+
+    // Logging
+    testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
+    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+}
+
+// ─── Test configuration ──────────────────────────────────────────────────────
+test {
+    useJUnit()
+
+    // Pass system properties to tests (useful for CI overrides)
+    systemProperty 'webdriver.driver', System.getProperty('webdriver.driver', 'chrome')
+    systemProperty 'headless',         System.getProperty('headless', 'true')
+    systemProperty 'serenity.project.name', 'Technical Test E2E'
+
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = false
+    }
+}
+
+// ─── Serenity reporting ──────────────────────────────────────────────────────
+serenity {
+    reports = ['single-page-html']
+}
+
+// Ensure Serenity aggregate report is generated after tests
+test.finalizedBy(aggregate)

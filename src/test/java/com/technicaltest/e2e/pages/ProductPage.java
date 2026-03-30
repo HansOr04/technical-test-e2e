@@ -49,7 +49,7 @@ public class ProductPage extends PageObject {
      * Success / error alert shown after clicking "Add to Cart".
      * OpenCart renders this as a Bootstrap alert at the top of the page.
      */
-    @FindBy(xpath = "//div[contains(@class, 'alert-success')]")
+    @FindBy(css = ".alert-success")
     private WebElementFacade cartAlert;
 
     /** Link inside the success alert pointing directly to the cart. */
@@ -91,12 +91,9 @@ public class ProductPage extends PageObject {
      * Returns {@code true} when the success alert is present in the DOM after adding to cart.
      */
     public boolean isSuccessAlertPresent() {
-        try {
-            evaluateJavascript("window.scrollTo(0,0)");
-            return cartAlert.withTimeoutOf(java.time.Duration.ofSeconds(5)).isPresent();
-        } catch (Exception e) {
-            return false;
-        }
+        // Usamos isPresent() porque la alerta puede estar en el HTML pero Serenity 
+        // cree que no es "visible" porque se está desvaneciendo.
+        return cartAlert.withTimeoutOf(java.time.Duration.ofSeconds(10)).isPresent();
     }
 
     /** Returns the full text of the post-add alert (success or error). */

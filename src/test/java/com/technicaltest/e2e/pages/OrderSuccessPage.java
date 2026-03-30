@@ -20,7 +20,7 @@ public class OrderSuccessPage extends PageObject {
      * "Your order has been placed!" heading (h1).
      * Core assertion element for this page.
      */
-    @FindBy(css = "div#content h1")
+    @FindBy(css = "#content h1")
     private WebElementFacade successHeading;
 
     /**
@@ -65,7 +65,7 @@ public class OrderSuccessPage extends PageObject {
      * Main assertion method to confirm the order was placed successfully.
      */
     public boolean isOrderSuccessful() {
-        return successHeading.isVisible();
+        return successHeading.withTimeoutOf(java.time.Duration.ofSeconds(10)).isVisible();
     }
 
     /**
@@ -73,7 +73,9 @@ public class OrderSuccessPage extends PageObject {
      * "Your order has been placed!").
      */
     public String getSuccessHeadingText() {
-        return successHeading.getText().trim();
+        return successHeading.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                             .waitUntilVisible()
+                             .getText().trim();
     }
 
     /**

@@ -29,12 +29,12 @@ public class AddProductToCart implements Task {
     public <T extends Actor> void performAs(T actor) {
         productPage.addToCart(quantity);
         
-        // ESPERA DE ESTABILIDAD (Crucial para OpenCart)
-        try { Thread.sleep(2000); } catch (InterruptedException e) {}
+        // 1. Espera de cortesía: Dale 1.5 segundos reales para que el JS de OpenCart respire
+        try { Thread.sleep(1500); } catch (InterruptedException e) {}
         
-        // Cambia la lógica para verificar si ESTÁ PRESENTE (aunque no sea visible al 100% todavía)
+        // 2. Validación: Solo falla si NO está en el código (isPresent), no si no es visible
         if (!productPage.isSuccessAlertPresent()) {
-            throw new AssertionError("Product added to cart, but success alert was not found in the page.");
+            throw new AssertionError("La alerta de éxito no apareció en el tiempo esperado.");
         }
     }
 }

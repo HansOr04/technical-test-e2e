@@ -15,11 +15,11 @@ public class HomePage extends PageObject {
     // ── Search ────────────────────────────────────────────────────────────────
 
     /** Main search input in the top navbar. */
-    @FindBy(css = "input[name='search']")
+    @FindBy(name = "search")
     private WebElementFacade searchInput;
 
     /** Search submit button (magnifying-glass icon). */
-    @FindBy(css = "button.btn-default[type='button'] span.glyphicon-search")
+    @FindBy(css = "#search button")
     private WebElementFacade searchButton;
 
     // ── Top navigation ────────────────────────────────────────────────────────
@@ -58,8 +58,7 @@ public class HomePage extends PageObject {
      * @param productName keyword(s) to search for
      */
     public void searchFor(String productName) {
-        searchInput.clear();
-        searchInput.type(productName);
+        searchInput.waitUntilVisible().type(productName);
         searchButton.click();
     }
 

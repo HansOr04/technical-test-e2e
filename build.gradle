@@ -47,7 +47,11 @@ dependencies {
 
     // Logging
     testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
-    testImplementation "org.slf4j:slf4j-simple:${slf4jVersion}"
+    // WebDriverManager (Force update to support Chrome 115+)
+    testImplementation "io.github.bonigarcia:webdrivermanager:5.9.2"
+
+    // Forzar el motor de Selenium a una versión que soporte Chrome 115+
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.16.1'
 }
 
 // ─── Test configuration ───────────────────────────────────────────────────────
@@ -71,3 +75,13 @@ serenity {
 
 // Generate Serenity report after tests complete
 test.finalizedBy aggregate
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.seleniumhq.selenium:selenium-java:4.16.1'
+        force 'org.seleniumhq.selenium:selenium-remote-driver:4.16.1'
+        force 'org.seleniumhq.selenium:selenium-chrome-driver:4.16.1'
+        force 'org.seleniumhq.selenium:selenium-api:4.16.1'
+        force 'org.seleniumhq.selenium:selenium-support:4.16.1'
+    }
+}

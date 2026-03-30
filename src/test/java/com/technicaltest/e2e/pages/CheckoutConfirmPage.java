@@ -67,7 +67,7 @@ public class CheckoutConfirmPage extends PageObject {
      * "Confirm Order" button — submits the order and navigates to the success page.
      * Identified by its {@code id} for maximum stability.
      */
-    @FindBy(css = "div#collapse-checkout-confirm #button-confirm")
+    @FindBy(id = "button-confirm")
     private WebElementFacade confirmOrderButton;
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -79,7 +79,9 @@ public class CheckoutConfirmPage extends PageObject {
      * to the success page.
      */
     public void confirmOrder() {
-        confirmOrderButton.click();
+        confirmOrderButton.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                          .waitUntilClickable()
+                          .click();
     }
 
     /**

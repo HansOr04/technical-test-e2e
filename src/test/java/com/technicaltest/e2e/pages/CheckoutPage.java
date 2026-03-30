@@ -114,8 +114,16 @@ public class CheckoutPage extends PageObject {
     private WebElementFacade termsCheckbox;
 
     /** "Continue" button in Step 5 (Payment Method). */
-    @FindBy(css = "div#collapse-payment-method input#button-payment-method")
+    @FindBy(id = "button-payment-method")
     private WebElementFacade continueStep5Button;
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Step 6 – Confirm Order
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /** "Confirm Order" button (Final step). */
+    @FindBy(id = "button-confirm")
+    private WebElementFacade confirmOrderButton;
 
     // ─────────────────────────────────────────────────────────────────────────
     // Validation helpers
@@ -194,7 +202,9 @@ public class CheckoutPage extends PageObject {
 
     /** Accepts the default delivery address and continues. */
     public void continueDeliveryDetails() {
-        continueStep3Button.click();
+        continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                           .waitUntilClickable()
+                           .click();
     }
 
     // ── Step 4 ────────────────────────────────────────────────────────────────
@@ -204,7 +214,9 @@ public class CheckoutPage extends PageObject {
         if (!shippingMethodRadio.isSelected()) {
             shippingMethodRadio.click();
         }
-        continueStep4Button.click();
+        continueStep4Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                           .waitUntilClickable()
+                           .click();
     }
 
     // ── Step 5 ────────────────────────────────────────────────────────────────
@@ -213,13 +225,25 @@ public class CheckoutPage extends PageObject {
      * Selects the first/only payment method, accepts T&Cs if present, and continues.
      */
     public void selectPaymentMethodAndContinue() {
+        paymentMethodRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilVisible();
         if (!paymentMethodRadio.isSelected()) {
             paymentMethodRadio.click();
         }
         if (termsCheckbox.isPresent() && !termsCheckbox.isSelected()) {
             termsCheckbox.click();
         }
-        continueStep5Button.click();
+        continueStep5Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                           .waitUntilClickable()
+                           .click();
+    }
+
+    // ── Step 6 ────────────────────────────────────────────────────────────────
+
+    /** Clicks the final confirm order button. */
+    public void confirmOrder() {
+        confirmOrderButton.withTimeoutOf(java.time.Duration.ofSeconds(10))
+                          .waitUntilClickable()
+                          .click();
     }
 
     // ── Validation ─────────────────────────────────────────────────────────────

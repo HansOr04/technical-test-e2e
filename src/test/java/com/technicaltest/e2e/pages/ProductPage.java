@@ -49,7 +49,7 @@ public class ProductPage extends PageObject {
      * Success / error alert shown after clicking "Add to Cart".
      * OpenCart renders this as a Bootstrap alert at the top of the page.
      */
-    @FindBy(css = "div.alert.alert-success, div.alert.alert-danger")
+    @FindBy(css = ".alert-success")
     private WebElementFacade cartAlert;
 
     /** Link inside the success alert pointing directly to the cart. */
@@ -91,7 +91,12 @@ public class ProductPage extends PageObject {
      * Returns {@code true} when the success alert is displayed after adding to cart.
      */
     public boolean isSuccessAlertVisible() {
-        return cartAlert.isVisible() && cartAlert.getAttribute("class").contains("alert-success");
+        try {
+            cartAlert.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilVisible();
+            return cartAlert.getAttribute("class").contains("alert-success");
+        } catch (org.openqa.selenium.TimeoutException | net.thucydides.core.webdriver.exceptions.ElementShouldBeVisibleException e) {
+            return false;
+        }
     }
 
     /** Returns the full text of the post-add alert (success or error). */

@@ -133,7 +133,7 @@ public class CheckoutPage extends PageObject {
 
     /** Selects "Guest Checkout" and continues to the billing form. */
     public void selectGuestCheckout() {
-        guestCheckoutRadio.click();
+        guestCheckoutRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilClickable().click();
         continueStep1Button.click();
     }
 

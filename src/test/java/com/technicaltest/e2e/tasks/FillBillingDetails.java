@@ -38,13 +38,10 @@ public class FillBillingDetails implements Task {
         );
         checkoutPage.continueToBillingStep();
 
-        // Step 3: Delivery Details (use existing address)
-        checkoutPage.continueDeliveryDetails();
-
-        // Step 4: Shipping Method
+        // Step 3: Delivery/Shipping Method (no Delivery Details step in this OpenCart)
         checkoutPage.selectShippingMethodAndContinue();
 
-        // Step 5: Payment Method
+        // Step 4: Payment Method
         checkoutPage.selectPaymentMethodAndContinue();
     }
 }

@@ -79,7 +79,7 @@ public class ProductPage extends PageObject {
     public void addToCart(int quantity) {
         quantityInput.clear();
         quantityInput.type(String.valueOf(quantity));
-        addToCartButton.click();
+        addToCartButton.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilClickable().click();
     }
 
     /** Clicks "Add to Cart" with the default quantity (1). */

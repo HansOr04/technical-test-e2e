@@ -200,15 +200,9 @@ public class CheckoutPage extends PageObject {
 
     // ── Step 3 ────────────────────────────────────────────────────────────────
 
-    /** Accepts the default delivery address and continues. */
+    /** Accepts the default delivery address and continues (skips gracefully if absent). */
     public void continueDeliveryDetails() {
-        // Wait briefly for accordion transition
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        
-        // Si el botón del paso 4 ya es visible, hacemos clic en él directamente
-        if (continueStep4Button.isVisible() || continueStep4Button.isPresent()) {
-            return; // We skipped step 3! The test can proceed to step 4 logically.
-        } else if (continueStep3Button.isPresent()) {
+        if (continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(3)).isPresent()) {
             evaluateJavascript("arguments[0].scrollIntoView(true);", continueStep3Button);
             continueStep3Button.withTimeoutOf(java.time.Duration.ofSeconds(10))
                                .waitUntilClickable()
@@ -220,9 +214,7 @@ public class CheckoutPage extends PageObject {
 
     /** Selects the first/only shipping method and continues. */
     public void selectShippingMethodAndContinue() {
-        // Wait briefly for accordion transition
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        
+        shippingMethodRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilClickable();
         if (!shippingMethodRadio.isSelected()) {
             shippingMethodRadio.click();
         }
@@ -240,10 +232,7 @@ public class CheckoutPage extends PageObject {
      * Selects the first/only payment method, accepts T&Cs if present, and continues.
      */
     public void selectPaymentMethodAndContinue() {
-        // Wait briefly for accordion transition
-        try { Thread.sleep(1000); } catch (InterruptedException e) {}
-        
-        paymentMethodRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilVisible();
+        paymentMethodRadio.withTimeoutOf(java.time.Duration.ofSeconds(10)).waitUntilClickable();
         if (!paymentMethodRadio.isSelected()) {
             paymentMethodRadio.click();
         }

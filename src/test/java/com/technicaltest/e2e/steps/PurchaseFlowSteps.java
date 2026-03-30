@@ -1,7 +1,6 @@
 package com.technicaltest.e2e.steps;
 
 import com.technicaltest.e2e.models.CustomerData;
-import com.technicaltest.e2e.pages.OrderSuccessPage;
 import com.technicaltest.e2e.tasks.*;
 
 import io.cucumber.java.After;
@@ -14,9 +13,15 @@ import io.cucumber.java.es.Y;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.annotations.CastMember;
-import net.serenitybdd.screenplay.ensure.Ensure;
 import net.thucydides.core.annotations.Managed;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PurchaseFlowSteps {
 
@@ -28,8 +33,6 @@ public class PurchaseFlowSteps {
 
     @CastMember(name = "El Cliente")
     private Actor cliente;
-
-    private OrderSuccessPage successPage; // For direct assertions at the end
 
     @Before
     public void setTheStage() {
@@ -85,9 +88,11 @@ public class PurchaseFlowSteps {
 
     @Entonces("debe ver el mensaje {string}")
     public void shouldSeeSuccessMessage(String expectedMessage) {
-        // We use Serenity Ensure for assertions inside Screenplay, validating the Page Object
-        cliente.attemptsTo(
-                Ensure.that(successPage.getSuccessHeadingText()).isEqualTo(expectedMessage)
-        );
+        // #button-confirm dispara un AJAX que redirige a checkout/success.
+        // Esperamos la navegación antes de leer el h1.
+        new WebDriverWait(browser, Duration.ofSeconds(15))
+                .until(ExpectedConditions.urlContains("route=checkout/success"));
+        String actual = browser.findElement(By.cssSelector("#content h1")).getText().trim();
+        assertThat(actual).isEqualTo(expectedMessage);
     }
 }

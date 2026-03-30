@@ -83,5 +83,6 @@ configurations.all {
         force 'org.seleniumhq.selenium:selenium-chrome-driver:4.16.1'
         force 'org.seleniumhq.selenium:selenium-api:4.16.1'
         force 'org.seleniumhq.selenium:selenium-support:4.16.1'
+        force 'org.seleniumhq.selenium:selenium-http:4.16.1'
     }
 }
